@@ -68,6 +68,22 @@ app.put("/updateuser/:id", (req, res) => {
   }
 });
 
+app.get("/deleteuser/:id", (req, res) => {
+  try {
+    db.query(
+      ` DELETE FROM USERS WHERE id = ${req.params.id}`,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        res.status(201).send(result);
+      }
+    );
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 app.listen(3001, () => {
   console.log("server running at 3001");
 });
