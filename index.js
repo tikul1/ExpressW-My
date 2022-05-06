@@ -1,6 +1,5 @@
 const express = require("express");
-const mysql = require("mysql");
-const { hostname } = require("os");
+const mysql = require("mysql2");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,6 +29,40 @@ app.post("/adduser", (req, res) => {
       );
       res.status(201).send({ msg: "user created." });
     }
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+app.get("/getuser/:id", (req, res) => {
+  try {
+    db.query(
+      `SELECT * FROM USERS WHERE id = ${req.params.id}`,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        res.status(201).send(result);
+        console.log(result);
+      }
+    );
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+app.put("/updateuser/:id", (req, res) => {
+  const { name, country } = req.body;
+  try {
+    db.query(
+      ` UPDATE USERS SET name= '${name}', country= '${country}' WHERE id = ${req.params.id}`,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        res.status(201).send(result);
+      }
+    );
   } catch (e) {
     console.log(e);
   }
